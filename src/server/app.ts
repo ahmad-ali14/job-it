@@ -65,7 +65,7 @@ class App {
   public listen() {
     this.app.listen(this.port, () => {
       // tslint:disable-next-line:no-console
-      console.log(`App listening on the http://localhost:${this.port}`);
+      console.log(`App listening on ${this.port}`);
     });
   }
 }

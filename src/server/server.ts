@@ -11,7 +11,7 @@ import UserController from "./controllers/user/user.controller";
 import InterviewController from "./controllers/interviews/interview.controller";
 
 const app = new App({
-  port: constants.__port__ || 3000,
+  port: Number(process.env.PORT) || constants.__port__ || 3000,
   controllers: [
     new HomeController(),
     new UserController(),
