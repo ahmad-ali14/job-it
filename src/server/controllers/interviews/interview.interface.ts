@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 
 interface Interview {
   _id: mongoose.Types.ObjectId;

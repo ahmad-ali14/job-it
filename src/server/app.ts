@@ -1,7 +1,7 @@
 import * as express from "express";
 import { Application } from "express";
 import * as mongoose from "mongoose";
-import config from "./config/config";
+import constants from "./config/constants";
 // import * as cors from "cors";
 
 class App {
@@ -47,7 +47,7 @@ class App {
 
   private initDatabase() {
     mongoose
-      .connect(config.mongo_url, {
+      .connect(constants.__mongo_url__, {
         useCreateIndex: true,
         useNewUrlParser: true,
         useFindAndModify: false,

@@ -1,6 +1,6 @@
 import App from "./app";
 import * as bodyParser from "body-parser";
-import config from "./config/config";
+import constants from "./config/constants";
 
 // middlewares
 import loggerMiddleware from "./middlewares/logger";
@@ -11,7 +11,7 @@ import UserController from "./controllers/user/user.controller";
 import InterviewController from "./controllers/interviews/interview.controller";
 
 const app = new App({
-  port: config.port || 3000,
+  port: constants.__port__ || 3000,
   controllers: [
     new HomeController(),
     new UserController(),
