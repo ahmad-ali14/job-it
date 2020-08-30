@@ -1322,6 +1322,11 @@ detect-libc@^1.0.2:
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
   integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
 
+dg-url@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/dg-url/-/dg-url-1.3.1.tgz#8a92bb665bcd6e7ab627a8cf328c65415328757f"
+  integrity sha512-TaPjXYtnT2DwIxz/S34JcaZvOPJQvoMoE2QP+Xo1qCogDT674GBse1W+M502jj1cZpqN8uuee7uhDQLDcxt6ug==
+
 diffie-hellman@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz#40e8ee98f55a2149607146921c63e1ae5f3d2875"
