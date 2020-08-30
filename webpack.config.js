@@ -37,7 +37,7 @@ const clientConfig = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.tsx?$|\.ts?$/,
                 loader: 'ts-loader',
                 exclude: /node_modules/,
                 options: {
