@@ -68,15 +68,22 @@ class UserController implements IControllerBase {
     const { email } = req.body;
     const reqPassword = req.body.password;
 
+    console.log(req.body);
+
     if (!email || !reqPassword) {
       return res.status(500).send({ err: "Email or Password is missing." });
     }
 
     userModel.findOne({ email }).then((user) => {
+      console.log("user", user.password);
+      console.log("req", reqPassword);
+
       const authorised = checkHashedPassword(user.password, reqPassword);
 
       if (authorised) {
         const token = generateToken(email);
+        console.log({ user, token });
+
         res.status(200).json({ user, token });
       } else {
         res.sendStatus(403);
