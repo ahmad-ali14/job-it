@@ -15,6 +15,9 @@ class Login extends React.Component<any, any> {
 
   submitLogin = (e) => {
     e.preventDefault();
+    if (this.state.email === "" || this.state.password === "") {
+      return this.props.setAppError("From state, No Email or password");
+    }
     this.props.userLogin(this.state.email, this.state.password);
   };
 

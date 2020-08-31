@@ -10,6 +10,6 @@
     "allowJs": true,
     "lib": ["es2015", "dom"]
   },
-  "include": ["src/client/**/*"],
+  "include": ["src/client/**/*", "./tsd.d.ts"],
   "exclude": ["node_modules"]
 }

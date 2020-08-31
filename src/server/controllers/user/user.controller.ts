@@ -2,15 +2,19 @@ import * as express from "express";
 import { Request, Response } from "express";
 import IControllerBase from "../../interfaces/IControllerBase.interface";
 import userModel from "./user.model";
-import Iuser from "./user.interface";
-import { Document } from "mongoose";
+import {
+  Iuser,
+  IuserWithoutPassword,
+  LoginResponse,
+  GetUserDataResponse,
+} from "../../../shared/types/user.types";
+import mongoose, { Document } from "mongoose";
 import {
   hashPassword,
   checkHashedPassword,
   generateToken,
 } from "./auth/helpers";
 import isAuthorised from "./auth/isAuthorised";
-import Interview from "../interviews/interview.interface";
 
 class UserController implements IControllerBase {
   public path = "/";
@@ -23,7 +27,8 @@ class UserController implements IControllerBase {
   public initRoutes() {
     this.router.post("/user/signup", this.signup);
     this.router.post("/user/login", this.login);
-    this.router.get("/user/all", this.users);
+    this.router.get("/user/all", isAuthorised, this.users);
+    this.router.get("/user/single/:userId", isAuthorised, this.userData);
   }
 
   users = (req: Request, res: Response) => {
@@ -40,8 +45,9 @@ class UserController implements IControllerBase {
         return res.status(500).send({ err: "email used by another account" });
       } else {
         const password = hashPassword(req.body.password);
-        // const initInterview: Interview = {};
+        const userId = mongoose.Types.ObjectId();
         const user: Iuser = {
+          _id: userId,
           firstName,
           lastName,
           email,
@@ -67,28 +73,112 @@ class UserController implements IControllerBase {
   login = (req: Request, res: Response) => {
     const { email } = req.body;
     const reqPassword = req.body.password;
-
-    console.log(req.body);
+    let responseObject: LoginResponse;
+    let userToSend: IuserWithoutPassword;
 
     if (!email || !reqPassword) {
-      return res.status(500).send({ err: "Email or Password is missing." });
+      responseObject = {
+        user: null,
+        err: "Email or Password is missing.",
+        isAuthorised: false,
+        interviews: [],
+        token: null,
+      };
+      return res.status(500).send(responseObject);
     }
 
-    userModel.findOne({ email }).then((user) => {
-      console.log("user", user.password);
-      console.log("req", reqPassword);
+    userModel
+      .findOne({ email })
+      .then((user) => {
+        if (user) {
+          const authorised = checkHashedPassword(user.password, reqPassword);
 
-      const authorised = checkHashedPassword(user.password, reqPassword);
+          if (authorised) {
+            // Authorised
+            const token = generateToken(email);
 
-      if (authorised) {
-        const token = generateToken(email);
-        console.log({ user, token });
+            userToSend = {
+              _id: user._id,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              email: user.email,
+            };
 
-        res.status(200).json({ user, token });
-      } else {
-        res.sendStatus(403);
-      }
-    });
+            responseObject = {
+              user: userToSend,
+              token: token,
+              err: null,
+              isAuthorised: true,
+              interviews: user.interviews,
+            };
+
+            res.status(200).json(responseObject);
+          } else {
+            //wrong password
+            responseObject = {
+              user: null,
+              token: null,
+              err: "wrong Email or password",
+              isAuthorised: false,
+              interviews: [],
+            };
+            res.status(403).send(responseObject);
+          }
+        } else {
+          // worng Email -> No user
+          responseObject = {
+            user: null,
+            token: null,
+            err: "No user, please create an account firstst.",
+            isAuthorised: false,
+            interviews: null,
+          };
+
+          res.status(403).json(responseObject);
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+  // user Data route
+
+  userData = (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    let responseObject: GetUserDataResponse;
+    let userToSend: IuserWithoutPassword;
+
+    userModel
+      .findOne({ _id: userId })
+      .then((user) => {
+        if (user) {
+          //user existed
+          userToSend = {
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+          };
+
+          responseObject = {
+            user: userToSend,
+            err: null,
+            interviews: user.interviews,
+            isAuthorised: true,
+          };
+
+          res.status(200).json(responseObject);
+        } else {
+          // No data Existed
+          responseObject = {
+            user: null,
+            err: "No user Found, please login",
+            interviews: [],
+            isAuthorised: false,
+          };
+          res.status(404).send(responseObject);
+        }
+      })
+      .catch((err) => console.error(err));
   };
 }
 

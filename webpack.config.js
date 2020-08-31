@@ -51,6 +51,24 @@ const clientConfig = {
                     'css-loader',
                     'sass-loader',
                 ]
+            },
+            {
+                test: /\.svg$/,
+                use: [
+                    {
+                        loader: 'svg-url-loader',
+                        options: {
+                            limit: 10000,
+                        },
+                    },
+                ],
+            }, {
+                test: /\.svg$/,
+                loader: 'url-loader'
+            },
+            {
+                test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+                loader: 'file-loader'
             }
         ]
     },

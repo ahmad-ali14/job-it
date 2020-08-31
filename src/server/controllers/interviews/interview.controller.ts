@@ -2,7 +2,7 @@ import * as express from "express";
 import { Request, Response } from "express";
 import IControllerBase from "../../interfaces/IControllerBase.interface";
 import userModel from "../user/user.model";
-import Iuser from "../user/user.interface";
+import { Iuser } from "../../../shared/types/user.types";
 import mongoose, { Document } from "mongoose";
 import isAuthorised from "../user/auth/isAuthorised";
 import Interview from "./interview.interface";

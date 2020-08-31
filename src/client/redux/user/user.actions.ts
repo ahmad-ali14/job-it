@@ -1,4 +1,15 @@
-import { LOGIN } from "./user.types";
+import {
+  LOGIN,
+  GET_USER_DATA,
+  SET_AUTHORIZATION_MANUALLY,
+  TOGGLE_LOADING,
+  LOGOUT,
+} from "./user.types";
+
+import {
+  LoginResponse,
+  GetUserDataResponse,
+} from "../../../shared/types/user.types";
 
 export const userLogin = (email, password) => (dispatch) => {
   fetch("/api/user/login", {
@@ -7,13 +18,64 @@ export const userLogin = (email, password) => (dispatch) => {
     body: JSON.stringify({ email, password }),
   })
     .then((res) => res.json())
-    .then((user) =>
-      dispatch({
+    .then((responseObject: LoginResponse) => {
+      console.log(responseObject.user);
+      if (responseObject.user !== null) {
+        window.localStorage.setItem(
+          "userId",
+          responseObject.user._id.toString()
+        );
+        window.localStorage.setItem("token", responseObject.token);
+      }
+
+      return dispatch({
         type: LOGIN,
-        payload: {
-          user: user,
-          isAuthorised: true,
-        },
-      })
-    );
+        payload: responseObject,
+      });
+    });
+};
+
+export const getUserData = (token: string, userId: string) => (dispatch) => {
+  dispatch({ type: TOGGLE_LOADING });
+  fetch(`/api/user/single/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((responseObject: GetUserDataResponse) => {
+      return dispatch({
+        type: GET_USER_DATA,
+        payload: { ...responseObject, isLoading: false },
+      });
+    });
+};
+
+export const logUserOut = () => (dispatch) => {
+  dispatch({ type: TOGGLE_LOADING });
+  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("userId");
+
+  dispatch({
+    type: LOGOUT,
+    payload: {
+      user: null,
+      isAuthorised: false,
+      interviews: [],
+      err: null,
+      token: null,
+      isLoading: false,
+    },
+  });
+};
+
+export const setIsAuthorised = (value: boolean) => (dispatch) => {
+  return dispatch({
+    type: SET_AUTHORIZATION_MANUALLY,
+    payload: {
+      isAuthorised: value,
+    },
+  });
 };
