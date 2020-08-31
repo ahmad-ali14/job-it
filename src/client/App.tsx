@@ -1,13 +1,17 @@
 import * as React from "react";
 // import { domain } from "./helpers";
 // import Iuser from "../server/controllers/user/user.interface";
-import Login from "./components/user/loging";
+import Login from "./components/user/login";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 //const mainImage = require("./assets/imgs/main.svg");
 // import main from "./assets/imgs/main.svg";
 import { IuserWithoutPassword } from "../shared/types/user.types";
 import { getUserData, setIsAuthorised } from "./redux/user/user.actions";
+import Loading from "./components/helpers/loading";
+import Header from "./components/layout/header";
+import Footer from "./components/layout/footer";
+import AppRouter from "./appRouter";
 
 class App extends React.Component<IAppProps, IAppState> {
   static propTypes: {
@@ -46,35 +50,12 @@ class App extends React.Component<IAppProps, IAppState> {
 
   render() {
     const { user, err, isAuthorised, isLoading } = this.props;
-    return isLoading ? (
-      <main className="container my-5">
-        <div className="bg-info text-center text-white">
-          <h1>PLEASE WAIT ...</h1>
-        </div>
-      </main>
-    ) : (
-      <main className="container my-5">
-        {(err || this.state.err) && (
-          <div className="bg-danger text-white text-xl-center">
-            {err || this.state.err}
-          </div>
-        )}
-
-        {user && (
-          <p>
-            you are:{" "}
-            {`${user.firstName} ${user.lastName} and your email is ${user.email}  `}
-          </p>
-        )}
-
-        {isAuthorised ? (
-          <p style={{ color: "green" }}>You are Authorised </p>
-        ) : (
-          <p style={{ color: "red" }}>you are NOT Authorised</p>
-        )}
-
-        {!isAuthorised && <Login setAppError={this.setAppError} />}
-      </main>
+    return (
+      <>
+        <Header isAuthorised={isAuthorised} />
+        {isLoading ? <Loading /> : <AppRouter />}
+        <Footer />
+      </>
     );
   }
 }
