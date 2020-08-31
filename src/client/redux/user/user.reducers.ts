@@ -1,8 +1,12 @@
 import { LOGIN } from "./user.types";
+import { LoginResponse } from "../../../shared/types/user.types";
 
-const userState = {
-  user: {},
+const userState: LoginResponse = {
+  user: null,
   isAuthorised: false,
+  interviews: [],
+  err: null,
+  token: null,
 };
 
 const userReducer = (state = userState, action) => {
@@ -12,6 +16,9 @@ const userReducer = (state = userState, action) => {
         ...state,
         user: action.payload.user,
         isAuthorised: action.payload.isAuthorised,
+        interviews: action.payload.interviews,
+        err: action.payload.err,
+        token: action.payload.token,
       };
 
     default:

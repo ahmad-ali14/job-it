@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import Iuser from "./user.interface";
+import { Iuser } from "../../../shared/types/user.types";
 
 const userSchema = new mongoose.Schema(
   {
