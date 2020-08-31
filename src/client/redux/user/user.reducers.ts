@@ -3,6 +3,7 @@ import {
   GET_USER_DATA,
   SET_AUTHORIZATION_MANUALLY,
   TOGGLE_LOADING,
+  LOGOUT,
 } from "./user.types";
 
 import { UserStateInReduxStore } from "../../../shared/types/user.types";
@@ -36,6 +37,17 @@ const userReducer = (state = userState, action) => {
         err: action.payload.err,
         isAuthorised: action.payload.isAuthorised,
         isLoading: action.payload.isLoading,
+      };
+
+    case LOGOUT:
+      return {
+        ...state,
+        user: action.payload.user,
+        interviews: action.payload.interviews,
+        err: action.payload.err,
+        isAuthorised: action.payload.isAuthorised,
+        isLoading: action.payload.isLoading,
+        token: action.payload.token,
       };
 
     case SET_AUTHORIZATION_MANUALLY:

@@ -3,6 +3,7 @@ import {
   GET_USER_DATA,
   SET_AUTHORIZATION_MANUALLY,
   TOGGLE_LOADING,
+  LOGOUT,
 } from "./user.types";
 
 import {
@@ -50,6 +51,24 @@ export const getUserData = (token: string, userId: string) => (dispatch) => {
         payload: { ...responseObject, isLoading: false },
       });
     });
+};
+
+export const logUserOut = () => (dispatch) => {
+  dispatch({ type: TOGGLE_LOADING });
+  window.localStorage.removeItem("token");
+  window.localStorage.removeItem("userId");
+
+  dispatch({
+    type: LOGOUT,
+    payload: {
+      user: null,
+      isAuthorised: false,
+      interviews: [],
+      err: null,
+      token: null,
+      isLoading: false,
+    },
+  });
 };
 
 export const setIsAuthorised = (value: boolean) => (dispatch) => {
