@@ -4,7 +4,7 @@ import Iuser from "../server/controllers/user/user.interface";
 import Login from "./components/user/loging";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import dg from "dg-url";
+const mainImage = require("./assets/imgs/main.svg");
 
 class App extends React.Component<IAppProps, IAppState> {
   static propTypes: {};
@@ -36,8 +36,7 @@ class App extends React.Component<IAppProps, IAppState> {
 
         <hr />
 
-        {dg("https://ahmad-ali.co.uk/")}
-
+        <img src={mainImage} alt="mainImage" />
         <hr />
 
         <Login />
