@@ -31,3 +31,12 @@ export interface GetUserDataResponse {
   err: string;
   isAuthorised: boolean;
 }
+
+export interface UserStateInReduxStore {
+  user: IuserWithoutPassword | null;
+  isAuthorised: boolean;
+  interviews: Interview[] | [];
+  err: string | null;
+  token: string | null;
+  isLoading: boolean;
+}

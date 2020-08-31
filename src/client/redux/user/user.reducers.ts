@@ -1,12 +1,19 @@
-import { LOGIN, GET_USER_DATA, SET_AUTHORIZATION_MANUALLY } from "./user.types";
-import { LoginResponse } from "../../../shared/types/user.types";
+import {
+  LOGIN,
+  GET_USER_DATA,
+  SET_AUTHORIZATION_MANUALLY,
+  TOGGLE_LOADING,
+} from "./user.types";
 
-const userState: LoginResponse = {
+import { UserStateInReduxStore } from "../../../shared/types/user.types";
+
+const userState: UserStateInReduxStore = {
   user: null,
   isAuthorised: false,
   interviews: [],
   err: null,
   token: null,
+  isLoading: false,
 };
 
 const userReducer = (state = userState, action) => {
@@ -28,12 +35,19 @@ const userReducer = (state = userState, action) => {
         interviews: action.payload.interviews,
         err: action.payload.err,
         isAuthorised: action.payload.isAuthorised,
+        isLoading: action.payload.isLoading,
       };
 
     case SET_AUTHORIZATION_MANUALLY:
       return {
         ...state,
         isAuthorised: action.payload.isAuthorised,
+      };
+
+    case TOGGLE_LOADING:
+      return {
+        ...state,
+        isLoading: !state.isLoading,
       };
 
     default:

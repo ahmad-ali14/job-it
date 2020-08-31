@@ -1,4 +1,10 @@
-import { LOGIN, GET_USER_DATA, SET_AUTHORIZATION_MANUALLY } from "./user.types";
+import {
+  LOGIN,
+  GET_USER_DATA,
+  SET_AUTHORIZATION_MANUALLY,
+  TOGGLE_LOADING,
+} from "./user.types";
+
 import {
   LoginResponse,
   GetUserDataResponse,
@@ -29,8 +35,7 @@ export const userLogin = (email, password) => (dispatch) => {
 };
 
 export const getUserData = (token: string, userId: string) => (dispatch) => {
-  console.log("getting user data");
-
+  dispatch({ type: TOGGLE_LOADING });
   fetch(`/api/user/single/${userId}`, {
     method: "GET",
     headers: {
@@ -42,7 +47,7 @@ export const getUserData = (token: string, userId: string) => (dispatch) => {
     .then((responseObject: GetUserDataResponse) => {
       return dispatch({
         type: GET_USER_DATA,
-        payload: responseObject,
+        payload: { ...responseObject, isLoading: false },
       });
     });
 };

@@ -17,6 +17,7 @@ class App extends React.Component<IAppProps, IAppState> {
     err: PropTypes.Requireable<string>;
     token: PropTypes.Requireable<string>;
     getUserData: PropTypes.Validator<(token: string, userId: string) => void>;
+    isLoading: PropTypes.Requireable<boolean>;
   };
 
   constructor(props: IAppProps) {
@@ -44,8 +45,14 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   render() {
-    const { user, interviews, err, isAuthorised, token } = this.props;
-    return (
+    const { user, err, isAuthorised, isLoading } = this.props;
+    return isLoading ? (
+      <main className="container my-5">
+        <div className="bg-info text-center text-white">
+          <h1>PLEASE WAIT ...</h1>
+        </div>
+      </main>
+    ) : (
       <main className="container my-5">
         {(err || this.state.err) && (
           <div className="bg-danger text-white text-xl-center">
@@ -79,6 +86,7 @@ export interface IAppProps {
   err: string;
   token: string;
   getUserData: Function;
+  isLoading: boolean;
 }
 
 export interface IAppState {
@@ -92,6 +100,7 @@ App.propTypes = {
   err: PropTypes.string,
   token: PropTypes.string,
   getUserData: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
@@ -100,6 +109,7 @@ const mapStateToProps = (state) => ({
   interviews: state.user.interviews,
   err: state.user.err,
   token: state.user.token,
+  isLoading: state.user.isLoading,
 });
 
 export default connect(mapStateToProps, { getUserData })(App);
