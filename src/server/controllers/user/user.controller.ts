@@ -6,6 +6,7 @@ import {
   Iuser,
   IuserWithoutPassword,
   LoginResponse,
+  GetUserDataResponse,
 } from "../../../shared/types/user.types";
 import mongoose, { Document } from "mongoose";
 import {
@@ -27,6 +28,7 @@ class UserController implements IControllerBase {
     this.router.post("/user/signup", this.signup);
     this.router.post("/user/login", this.login);
     this.router.get("/user/all", isAuthorised, this.users);
+    this.router.get("/user/single/:userId", isAuthorised, this.userData);
   }
 
   users = (req: Request, res: Response) => {
@@ -133,6 +135,47 @@ class UserController implements IControllerBase {
           };
 
           res.status(403).json(responseObject);
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+  // user Data route
+
+  userData = (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    let responseObject: GetUserDataResponse;
+    let userToSend: IuserWithoutPassword;
+
+    userModel
+      .findOne({ _id: userId })
+      .then((user) => {
+        if (user) {
+          //user existed
+          userToSend = {
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+          };
+
+          responseObject = {
+            user: userToSend,
+            err: null,
+            interviews: user.interviews,
+            isAuthorised: true,
+          };
+
+          res.status(200).json(responseObject);
+        } else {
+          // No data Existed
+          responseObject = {
+            user: null,
+            err: "No user Found, please login",
+            interviews: [],
+            isAuthorised: false,
+          };
+          res.status(404).send(responseObject);
         }
       })
       .catch((err) => console.error(err));

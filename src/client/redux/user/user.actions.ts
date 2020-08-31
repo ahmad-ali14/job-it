@@ -1,5 +1,8 @@
-import { LOGIN } from "./user.types";
-import { LoginResponse } from "../../../shared/types/user.types";
+import { LOGIN, GET_USER_DATA, SET_AUTHORIZATION_MANUALLY } from "./user.types";
+import {
+  LoginResponse,
+  GetUserDataResponse,
+} from "../../../shared/types/user.types";
 
 export const userLogin = (email, password) => (dispatch) => {
   fetch("/api/user/login", {
@@ -23,4 +26,32 @@ export const userLogin = (email, password) => (dispatch) => {
         payload: responseObject,
       });
     });
+};
+
+export const getUserData = (token: string, userId: string) => (dispatch) => {
+  console.log("getting user data");
+
+  fetch(`/api/user/single/${userId}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+  })
+    .then((res) => res.json())
+    .then((responseObject: GetUserDataResponse) => {
+      return dispatch({
+        type: GET_USER_DATA,
+        payload: responseObject,
+      });
+    });
+};
+
+export const setIsAuthorised = (value: boolean) => (dispatch) => {
+  return dispatch({
+    type: SET_AUTHORIZATION_MANUALLY,
+    payload: {
+      isAuthorised: value,
+    },
+  });
 };

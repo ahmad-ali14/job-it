@@ -24,3 +24,10 @@ export interface LoginResponse {
   err: string | null;
   token: string | null;
 }
+
+export interface GetUserDataResponse {
+  user: IuserWithoutPassword | null;
+  interviews: Interview[] | [];
+  err: string;
+  isAuthorised: boolean;
+}
