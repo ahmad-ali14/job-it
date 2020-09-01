@@ -4,12 +4,24 @@ import {
   SET_AUTHORIZATION_MANUALLY,
   TOGGLE_LOADING,
   LOGOUT,
+  ADD_INTERVIEW,
 } from "./user.types";
 
 import {
   LoginResponse,
   GetUserDataResponse,
 } from "../../../shared/types/user.types";
+
+import {
+  Interview,
+  InterviewWithoutId,
+} from "../../../shared/types/interview.types";
+
+import * as mongoose from "mongoose";
+
+/*************
+ *  Authorization
+ *************/
 
 export const userLogin = (email, password) => (dispatch) => {
   fetch("/api/user/login", {
@@ -77,4 +89,33 @@ export const setIsAuthorised = (value: boolean) => (dispatch) => {
       isAuthorised: value,
     },
   });
+};
+
+/*************
+ *  Interviews
+ *************/
+
+export const addInterviewToUser = (data: InterviewWithoutId, token, userId) => (
+  dispatch
+) => {
+  dispatch({ type: TOGGLE_LOADING });
+  const addInterviewBody = { userId, ...data, _id: mongoose.Types.ObjectId() };
+  console.log(addInterviewBody);
+
+  fetch("/api/interview/add", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify(addInterviewBody),
+  })
+    .then((res) => res.json())
+    .then((resData) => {
+      console.log("res.data", resData);
+      return dispatch({
+        type: ADD_INTERVIEW,
+        payload: { ...resData, isLoading: false, interview: addInterviewBody },
+      });
+    });
 };

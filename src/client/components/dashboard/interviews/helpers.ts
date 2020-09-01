@@ -35,13 +35,10 @@ export const prepareInterviewsIntoSections = (that) => {
       }
     });
 
-    that.setState(
-      {
-        previousInterviews: pre,
-        thisWeekInterviews: now,
-        futureInterviews: next,
-      },
-      () => console.log(that.state)
-    );
+    that.setState({
+      previousInterviews: pre,
+      thisWeekInterviews: now,
+      futureInterviews: next,
+    });
   }
 };

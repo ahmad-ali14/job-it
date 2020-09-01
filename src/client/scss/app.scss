@@ -1,5 +1,16 @@
-$theme-colors: (
-    'primary': #0091ea //Covalence Blue!  :D
+$theme-colors: ('primary': #0091ea //Covalence Blue!  :D
 );
 
 @import '../../../node_modules/bootstrap/scss/bootstrap.scss';
+
+.btn-clear {
+    background-color: transparent !important;
+    border-style: none !important;
+    cursor: pointer;
+}
+
+.btn-clear:active,
+.btn-clear:focus {
+    outline-style: none !important;
+    outline-color: transparent;
+}

@@ -1,10 +1,10 @@
 import * as React from "react";
-import SingleInterview from "./SingleInterview";
+import SingleInterview from "./singleInterview";
 import { Interview } from "../../../../shared/types/interview.types";
 
 const InterviewsTable: React.FC<ThisProps> = ({ interviewData }) => {
   return (
-    <table className="table m-2">
+    <table className="table m-3">
       <thead>
         <tr>
           <th scope="col">id</th>
