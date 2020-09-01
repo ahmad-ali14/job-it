@@ -4,6 +4,7 @@ import {
   SET_AUTHORIZATION_MANUALLY,
   TOGGLE_LOADING,
   LOGOUT,
+  ADD_INTERVIEW,
 } from "./user.types";
 
 import { UserStateInReduxStore } from "../../../shared/types/user.types";
@@ -54,6 +55,13 @@ const userReducer = (state = userState, action) => {
       return {
         ...state,
         isAuthorised: action.payload.isAuthorised,
+      };
+
+    case ADD_INTERVIEW:
+      return {
+        ...state,
+        isLoading: action.payload.isLoading,
+        interviews: [...state.interviews, action.payload.interview],
       };
 
     case TOGGLE_LOADING:

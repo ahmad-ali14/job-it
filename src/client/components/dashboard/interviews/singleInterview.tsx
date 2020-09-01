@@ -12,9 +12,13 @@ class SingleInterview extends React.Component<
   };
   render() {
     const { isAuthorised, interview } = this.props;
+    const intervewId: string =
+      typeof interview._id === "string"
+        ? interview._id.substr(20, 24)
+        : interview._id.toString().substr(20, 24);
     return (
       <tr>
-        <th scope="row">{interview._id.substr(20, 24)}</th>
+        <th scope="row">{intervewId}</th>
         <td>{interview.company}</td>
         <td>{new Date(interview.time).toLocaleDateString()}</td>
         <td>{interview.comments.length}</td>

@@ -14,15 +14,15 @@ import Footer from "./components/layout/footer";
 import AppRouter from "./appRouter";
 
 class App extends React.Component<IAppProps, IAppState> {
-  static propTypes: {
-    user: PropTypes.Requireable<object>;
-    isAuthorised: PropTypes.Requireable<boolean>;
-    interviews: PropTypes.Requireable<any[]>;
-    err: PropTypes.Requireable<string>;
-    token: PropTypes.Requireable<string>;
-    getUserData: PropTypes.Validator<(token: string, userId: string) => void>;
-    isLoading: PropTypes.Requireable<boolean>;
-  };
+  // static propTypes: {
+  //   user: PropTypes.Requireable<object>;
+  //   isAuthorised: PropTypes.Requireable<boolean>;
+  //   interviews: PropTypes.Requireable<any[]>;
+  //   err: PropTypes.Requireable<string>;
+  //   token: PropTypes.Requireable<string>;
+  //   getUserData: PropTypes.Validator<(token: string, userId: string) => void>;
+  //   isLoading: PropTypes.Requireable<boolean>;
+  // };
 
   constructor(props: IAppProps) {
     super(props);
@@ -37,13 +37,9 @@ class App extends React.Component<IAppProps, IAppState> {
     const userId = window.localStorage.getItem("userId");
     const token = window.localStorage.getItem("token");
 
-    console.log(token, userId);
-
     if (!userId || !token || userId === "" || token === "") {
       setIsAuthorised(false);
     } else {
-      console.log("get user data");
-
       this.props.getUserData(token, userId);
     }
   }
@@ -66,7 +62,7 @@ export interface IAppProps {
   isAuthorised: boolean;
   err: string;
   token: string;
-  getUserData: Function;
+  getUserData: (token: string, userId: string) => void;
   isLoading: boolean;
 }
 
@@ -74,15 +70,15 @@ export interface IAppState {
   err: string | null;
 }
 
-App.propTypes = {
-  user: PropTypes.object,
-  isAuthorised: PropTypes.bool,
-  interviews: PropTypes.array,
-  err: PropTypes.string,
-  token: PropTypes.string,
-  getUserData: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
-};
+// App.propTypes = {
+//   user: PropTypes.object,
+//   isAuthorised: PropTypes.bool,
+//   interviews: PropTypes.array,
+//   err: PropTypes.string,
+//   token: PropTypes.string,
+//   getUserData: PropTypes.func.isRequired,
+//   isLoading: PropTypes.bool,
+// };
 
 const mapStateToProps = (state) => ({
   user: state.user.user,

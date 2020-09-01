@@ -14,15 +14,18 @@ const InterviewSectionsTop: React.FC<ThisProps> = ({ setShow, setFunc }) => {
     setActive(e.target.value);
   };
 
+  const topBtnClasses = "nav-link shadow-none m-auto";
+  const topBtnStyle = {
+    border: "none",
+  };
   return (
     <ul className="nav nav-pills nav-fill nav-justified m-3">
       <li className="nav-item  m-auto ">
         <button
-          className={
-            "nav-link shadow-none m-auto" + active === "previous interviews"
-              ? "active"
-              : ""
-          }
+          className={`${topBtnClasses} ${
+            active === "previous interviews" ? "active" : ""
+          }`}
+          style={topBtnStyle}
           value="previous interviews"
           onClick={(e) => {
             setShow(e);
@@ -35,8 +38,11 @@ const InterviewSectionsTop: React.FC<ThisProps> = ({ setShow, setFunc }) => {
       </li>
       <li className="nav-item">
         <button
-          className={"nav-link shadow-none m-auto"}
+          className={`${topBtnClasses} ${
+            active === "this week" ? "active" : ""
+          }`}
           value="this week"
+          style={topBtnStyle}
           onClick={(e) => {
             setShow(e);
             setFunc("show interviews");
@@ -48,11 +54,10 @@ const InterviewSectionsTop: React.FC<ThisProps> = ({ setShow, setFunc }) => {
       </li>
       <li className="nav-item ">
         <button
-          className={
-            "nav-link shadow-none m-auto" + active === "future interviews"
-              ? "active"
-              : ""
-          }
+          className={`${topBtnClasses} ${
+            active === "future interviews" ? "active" : ""
+          }`}
+          style={topBtnStyle}
           value="future interviews"
           onClick={(e) => {
             setShow(e);
@@ -66,12 +71,11 @@ const InterviewSectionsTop: React.FC<ThisProps> = ({ setShow, setFunc }) => {
 
       <li className="nav-item">
         <button
+          className={`${topBtnClasses} ${
+            active === "add interview" ? "active" : ""
+          }`}
+          style={topBtnStyle}
           value="add interview"
-          className={
-            "nav-link shadow-none m-auto" + active === "add interviews"
-              ? "active"
-              : ""
-          }
           onClick={(e) => {
             setFunc("add interview");
             setActiveState(e);

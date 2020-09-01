@@ -6,3 +6,9 @@ export interface Interview {
   company: string;
   comments?: string[];
 }
+
+export interface InterviewWithoutId {
+  time: Date | number;
+  company: string;
+  comments?: string[];
+}
