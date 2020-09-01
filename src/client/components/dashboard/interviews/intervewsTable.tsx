@@ -10,7 +10,8 @@ const InterviewsTable: React.FC<ThisProps> = ({ interviewData }) => {
           <th scope="col">id</th>
           <th scope="col">company</th>
           <th scope="col">time</th>
-          <th scope="col">number of comments</th>
+          <th scope="col">comments</th>
+          <th scope="col">Actions </th>
         </tr>
       </thead>
       <tbody>

@@ -1,5 +1,3 @@
-import { collapseTextChangeRangesAcrossMultipleVersions } from "typescript";
-
 export const chooseInterviewData = (that) => {
   const show = that.state.show;
   switch (show) {
@@ -16,13 +14,17 @@ export const chooseInterviewData = (that) => {
 
 export const prepareInterviewsIntoSections = (that) => {
   if (that.props.interviews && that.props.interviews.length > 0) {
-    const pre = [];
+    let pre = [];
     const now = [];
     const next = [];
     const dateNow = Date.now();
     const dateAfterWeek = dateNow + 7 * 24 * 60 * 60 * 1000;
 
-    that.props.interviews.forEach((e) => {
+    const sortedInterviews = that.props.interviews.sort((a, b) => {
+      return a.time - b.time;
+    });
+
+    sortedInterviews.forEach((e) => {
       switch (true) {
         case e.time < dateNow:
           pre.push(e);
@@ -34,6 +36,8 @@ export const prepareInterviewsIntoSections = (that) => {
           now.push(e);
       }
     });
+
+    pre = pre.sort((a, b) => b.time - a.time);
 
     that.setState({
       previousInterviews: pre,
