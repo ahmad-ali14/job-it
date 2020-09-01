@@ -19,7 +19,6 @@ export const userLogin = (email, password) => (dispatch) => {
   })
     .then((res) => res.json())
     .then((responseObject: LoginResponse) => {
-      console.log(responseObject.user);
       if (responseObject.user !== null) {
         window.localStorage.setItem(
           "userId",

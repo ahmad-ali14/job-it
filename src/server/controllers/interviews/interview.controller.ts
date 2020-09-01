@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import IControllerBase from "../../interfaces/IControllerBase.interface";
 import userModel from "../user/user.model";
 import { Iuser } from "../../../shared/types/user.types";
-import mongoose, { Document } from "mongoose";
+import * as mongoose from "mongoose";
 import isAuthorised from "../user/auth/isAuthorised";
 import Interview from "./interview.interface";
 import companyModel from "../companies/company.model";
