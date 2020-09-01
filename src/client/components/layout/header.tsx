@@ -1,5 +1,13 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { logUserOut } from "../../redux/user/user.actions";
+
 class Header extends React.Component<IHeaderProps, IHeaderState> {
+  static propTypes: {
+    logUserOut: PropTypes.Validator<() => void>;
+    isAuthorised: PropTypes.Requireable<boolean>;
+  };
   render() {
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -21,9 +29,9 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
           <div className="collapse navbar-collapse" id="navbarResponsive">
             <ul className="nav navbar-nav text-center">
               <i className="material-icons text-white ml-5">
-                You're a{" "}
+                You're{" "}
                 {this.props.isAuthorised ? "Authorised" : "NOT Authorised"} ,
-                Your Id: {window.localStorage.getItem("userId")}
+                Your Id: {window.localStorage.getItem("userId") || "Null"}
               </i>
             </ul>
             <ul className="navbar-nav ml-auto">
@@ -34,22 +42,37 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
                   target="_blank"
                 >
                   {" "}
-                  My Portfolio
+                  My Account
                   <span className="sr-only">(current)</span>
                 </a>
               </li>
-              <li className="nav-item active ml-1">
-                <div>
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => {
-                      console.log("logiing out");
-                    }}
-                  >
-                    Logout
-                  </button>
-                </div>
-              </li>
+              {this.props.isAuthorised ? (
+                <li className="nav-item active ml-1">
+                  <div>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => {
+                        this.props.logUserOut();
+                      }}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </li>
+              ) : (
+                <li className="nav-item active ml-1">
+                  <div>
+                    <button
+                      className="btn btn-warning"
+                      onClick={() => {
+                        console.log("logiing out");
+                      }}
+                    >
+                      Login
+                    </button>
+                  </div>
+                </li>
+              )}
             </ul>
           </div>
         </div>
@@ -57,9 +80,15 @@ class Header extends React.Component<IHeaderProps, IHeaderState> {
     );
   }
 }
-export interface IHeaderProps {
+interface IHeaderProps {
   isAuthorised: boolean;
+  logUserOut: () => void;
 }
 
-export interface IHeaderState {}
-export default Header;
+interface IHeaderState {}
+
+const mapStateToProps = (state) => ({
+  isAuthorised: state.user.isAuthorised,
+});
+
+export default connect(mapStateToProps, { logUserOut })(Header);

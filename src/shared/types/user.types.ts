@@ -1,4 +1,4 @@
-import Interview from "../../server/controllers/interviews/interview.interface";
+import { Interview } from "./interview.types";
 import * as mongoose from "mongoose";
 
 export interface Iuser {
