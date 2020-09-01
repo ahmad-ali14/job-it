@@ -14,14 +14,39 @@ class SingleInterview extends React.Component<
     const { isAuthorised, interview } = this.props;
     const intervewId: string =
       typeof interview._id === "string"
-        ? interview._id.substr(20, 24)
-        : interview._id.toString().substr(20, 24);
+        ? interview._id
+        : interview._id.toString();
     return (
-      <tr>
-        <th scope="row">{intervewId}</th>
+      <tr key={intervewId}>
+        <th scope="row">{intervewId.substr(20, 24)}</th>
         <td>{interview.company}</td>
         <td>{new Date(interview.time).toLocaleDateString()}</td>
-        <td>{interview.comments.length}</td>
+        <td>
+          <ul
+            className="list-group list-group-flush"
+            style={{ listStyleType: "decimal" }}
+          >
+            {interview.comments && interview.comments.length > 0 ? (
+              interview.comments.map((e) => (
+                <li key={intervewId}>
+                  <p className=""> {e}</p>
+                </li>
+              ))
+            ) : (
+              <p className="text-sm text-muted text-secondary">
+                No comments yet
+              </p>
+            )}
+          </ul>
+        </td>
+        <td>
+          <button type="submit" className="btn btn-success mr-3">
+            update
+          </button>
+          <button type="submit" className="btn btn-danger">
+            delete
+          </button>
+        </td>
       </tr>
     );
   }

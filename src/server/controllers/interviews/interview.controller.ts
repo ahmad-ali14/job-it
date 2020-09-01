@@ -27,7 +27,7 @@ class InterviewController implements IControllerBase {
     console.log("create body", req.body);
 
     const { userId, time, company, comments } = req.body;
-    const interviewId = mongoose.Types.ObjectId();
+    const interviewId = req.body._id ? req.body._id : mongoose.Types.ObjectId();
 
     const interview: Interview = { _id: interviewId, time, company, comments };
 
