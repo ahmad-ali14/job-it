@@ -5,7 +5,7 @@ import userModel from "../user/user.model";
 import { Iuser } from "../../../shared/types/user.types";
 import * as mongoose from "mongoose";
 import isAuthorised from "../user/auth/isAuthorised";
-import Interview from "./interview.interface";
+import { Interview } from "../../../shared/types/interview.types";
 import companyModel from "../companies/company.model";
 import Icompany from "../companies/company.interface";
 

@@ -9,7 +9,6 @@ class Main extends React.Component<IMainProps, IMainState> {
     const { isAuthorised } = this.props;
     return (
       <main className="container my-5">
-        <div style={{ height: "68vh" }}></div>
         {!isAuthorised && (
           <Login
             setAppError={(msg) => {
