@@ -5,14 +5,16 @@ import Home from "./components/home";
 class AppRouter extends React.Component<IAppRouterProps, IAppRouterState> {
   render() {
     return (
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            {" "}
-            <Home />
-          </Route>
-        </Switch>
-      </Router>
+      <div style={{ minHeight: "100vh" }} className="m-3">
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              {" "}
+              <Home />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
     );
   }
 }

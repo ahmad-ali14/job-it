@@ -2,10 +2,13 @@ import {
   LOGIN,
   GET_USER_DATA,
   SET_AUTHORIZATION_MANUALLY,
-  TOGGLE_LOADING,
+  // TOGGLE_LOADING,
   LOGOUT,
   ADD_INTERVIEW,
+  DELETE_INTERVIEW,
 } from "./user.types";
+
+//import { SET_LOADING } from "../app/app.types";
 
 import { UserStateInReduxStore } from "../../../shared/types/user.types";
 
@@ -64,11 +67,18 @@ const userReducer = (state = userState, action) => {
         interviews: [...state.interviews, action.payload.interview],
       };
 
-    case TOGGLE_LOADING:
+    case DELETE_INTERVIEW:
       return {
         ...state,
-        isLoading: !state.isLoading,
+        isLoading: action.payload.isLoading,
+        interviews: action.payload.interviews,
       };
+
+    // case TOGGLE_LOADING:
+    //   return {
+    //     ...state,
+    //     isLoading: !state.isLoading,
+    //   };
 
     default:
       return state;

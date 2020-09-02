@@ -94,7 +94,7 @@ class InterviewController implements IControllerBase {
       )
       .then(() => {
         userModel.find({ _id: userId }).then((result) => {
-          res.status(200).send(result);
+          res.status(200).send(result[0].interviews);
         });
       })
       .catch((err) => res.status(500).send({ err }));

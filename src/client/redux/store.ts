@@ -1,13 +1,18 @@
 import { createStore, combineReducers, applyMiddleware, compose } from "redux";
 import testReducer from "./testss/test.reducer";
 import userReducer from "./user/user.reducers";
+import appReducer from "./app/app.reducer";
 import thunk from "redux-thunk";
 
 const state = {};
 
 const middlewares = [thunk];
 
-const reducers = combineReducers({ posts: testReducer, user: userReducer });
+const reducers = combineReducers({
+  posts: testReducer,
+  user: userReducer,
+  app: appReducer,
+});
 
 declare global {
   interface Window {

@@ -2,7 +2,7 @@ import * as React from "react";
 class Footer extends React.Component<IFooterProps, IFooterState> {
   render() {
     return (
-      <footer className="footer">
+      <footer className="footer" style={{ bottom: 0, marginTop: "auto" }}>
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
           <div className="container">
             <a className="navbar-brand" href="/">

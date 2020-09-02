@@ -60,7 +60,7 @@ const mapStateToProps = (state) => ({
   interviews: state.user.interviews,
   err: state.user.err,
   token: state.user.token,
-  isLoading: state.user.isLoading,
+  isLoading: state.app.loading,
 });
 
 export default connect(mapStateToProps, { getUserData })(App);

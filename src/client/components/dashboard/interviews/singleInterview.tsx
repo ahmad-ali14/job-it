@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { deleteInterviewFromUser } from "../../../redux/user/user.actions";
 
 class SingleInterview extends React.Component<
   ISingleInterviewProps,
@@ -10,6 +11,14 @@ class SingleInterview extends React.Component<
     isAuthorised: PropTypes.Requireable<boolean>;
     interview: PropTypes.Requireable<any>;
   };
+
+  deleteInterview = (e) => {
+    e.preventDefault();
+    const token = window.localStorage.getItem("token");
+    const userId = window.localStorage.getItem("userId");
+    const intervewId = e.target.value;
+    this.props.deleteInterviewFromUser(intervewId, userId, token);
+  };
   render() {
     const { isAuthorised, interview } = this.props;
     const intervewId: string =
@@ -17,7 +26,7 @@ class SingleInterview extends React.Component<
         ? interview._id
         : interview._id.toString();
     return (
-      <tr key={intervewId}>
+      <tr key={`row  ${intervewId}`}>
         <th scope="row">{intervewId.substr(20, 24)}</th>
         <td>{interview.company}</td>
         <td>{new Date(interview.time).toLocaleDateString()}</td>
@@ -27,8 +36,8 @@ class SingleInterview extends React.Component<
             style={{ listStyleType: "decimal" }}
           >
             {interview.comments && interview.comments.length > 0 ? (
-              interview.comments.map((e) => (
-                <li key={intervewId}>
+              interview.comments.map((e, i) => (
+                <li key={`li  ${intervewId} i ${i} `}>
                   <p className=""> {e}</p>
                 </li>
               ))
@@ -40,10 +49,19 @@ class SingleInterview extends React.Component<
           </ul>
         </td>
         <td>
-          <button type="submit" className="btn btn-success mr-3">
+          <button
+            type="submit"
+            value={intervewId}
+            className="btn btn-success mr-3"
+          >
             update
           </button>
-          <button type="submit" className="btn btn-danger">
+          <button
+            type="submit"
+            onClick={this.deleteInterview}
+            value={intervewId}
+            className="btn btn-danger"
+          >
             delete
           </button>
         </td>
@@ -54,8 +72,15 @@ class SingleInterview extends React.Component<
 export interface ISingleInterviewProps {
   isAuthorised: boolean;
   interview: any;
+  deleteInterviewFromUser: (
+    interviewId: string,
+    userId: string,
+    token: string
+  ) => void;
 }
 
 const mapStateToProps = (state) => ({ isAuthorised: state.user.isAuthorised });
 export interface ISingleInterviewState {}
-export default connect(mapStateToProps, null)(SingleInterview);
+export default connect(mapStateToProps, { deleteInterviewFromUser })(
+  SingleInterview
+);

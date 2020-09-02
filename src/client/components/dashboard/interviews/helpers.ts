@@ -1,5 +1,5 @@
 export const chooseInterviewData = (that) => {
-  const show = that.state.show;
+  const show = that.props.currentSection;
   switch (show) {
     case "this week":
       return that.state.thisWeekInterviews;

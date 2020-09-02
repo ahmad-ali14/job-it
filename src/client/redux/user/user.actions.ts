@@ -2,9 +2,10 @@ import {
   LOGIN,
   GET_USER_DATA,
   SET_AUTHORIZATION_MANUALLY,
-  TOGGLE_LOADING,
+  // TOGGLE_LOADING,
   LOGOUT,
   ADD_INTERVIEW,
+  DELETE_INTERVIEW,
 } from "./user.types";
 
 import {
@@ -18,6 +19,8 @@ import {
 } from "../../../shared/types/interview.types";
 
 import * as mongoose from "mongoose";
+
+import { SET_LOADING } from "../app/app.types";
 
 /*************
  *  Authorization
@@ -47,7 +50,7 @@ export const userLogin = (email, password) => (dispatch) => {
 };
 
 export const getUserData = (token: string, userId: string) => (dispatch) => {
-  dispatch({ type: TOGGLE_LOADING });
+  dispatch({ type: SET_LOADING, payload: { loading: true } });
   fetch(`/api/user/single/${userId}`, {
     method: "GET",
     headers: {
@@ -59,17 +62,20 @@ export const getUserData = (token: string, userId: string) => (dispatch) => {
     .then((responseObject: GetUserDataResponse) => {
       return dispatch({
         type: GET_USER_DATA,
-        payload: { ...responseObject, isLoading: false },
+        payload: { ...responseObject },
       });
+    })
+    .then(() => {
+      dispatch({ type: SET_LOADING, payload: { loading: false } });
     });
 };
 
-export const logUserOut = () => (dispatch) => {
-  dispatch({ type: TOGGLE_LOADING });
+export const logUserOut = () => async (dispatch) => {
+  dispatch({ type: SET_LOADING, payload: { loading: true } });
   window.localStorage.removeItem("token");
   window.localStorage.removeItem("userId");
 
-  dispatch({
+  await dispatch({
     type: LOGOUT,
     payload: {
       user: null,
@@ -80,6 +86,7 @@ export const logUserOut = () => (dispatch) => {
       isLoading: false,
     },
   });
+  return dispatch({ type: SET_LOADING, payload: { loading: false } });
 };
 
 export const setIsAuthorised = (value: boolean) => (dispatch) => {
@@ -98,9 +105,8 @@ export const setIsAuthorised = (value: boolean) => (dispatch) => {
 export const addInterviewToUser = (data: InterviewWithoutId, token, userId) => (
   dispatch
 ) => {
-  dispatch({ type: TOGGLE_LOADING });
+  dispatch({ type: SET_LOADING, payload: { loading: true } });
   const addInterviewBody = { userId, ...data, _id: mongoose.Types.ObjectId() };
-  console.log(addInterviewBody);
 
   fetch("/api/interview/add", {
     method: "POST",
@@ -111,11 +117,42 @@ export const addInterviewToUser = (data: InterviewWithoutId, token, userId) => (
     body: JSON.stringify(addInterviewBody),
   })
     .then((res) => res.json())
-    .then((resData) => {
-      console.log("res.data", resData);
+    .then((responseObject) => {
       return dispatch({
         type: ADD_INTERVIEW,
-        payload: { ...resData, isLoading: false, interview: addInterviewBody },
+        payload: {
+          ...responseObject,
+          isLoading: false,
+          interview: addInterviewBody,
+        },
       });
+    })
+    .then(() => {
+      dispatch({ type: SET_LOADING, payload: { loading: false } });
+    });
+};
+
+export const deleteInterviewFromUser = (interviewId, userId, token) => (
+  dispatch
+) => {
+  dispatch({ type: SET_LOADING, payload: { loading: true } });
+  fetch("/api/interview/delete", {
+    method: "delete",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `bearer ${token}`,
+    },
+    body: JSON.stringify({ userId, interviewId }),
+  })
+    .then((res) => res.json())
+    .then((responseObject) => {
+      console.log("res.objcect", responseObject);
+      return dispatch({
+        type: DELETE_INTERVIEW,
+        payload: { interviews: responseObject, isLoading: false },
+      });
+    })
+    .then(() => {
+      dispatch({ type: SET_LOADING, payload: { loading: false } });
     });
 };
