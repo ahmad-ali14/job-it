@@ -5,6 +5,15 @@ import { chooseInterviewData, prepareInterviewsIntoSections } from "./helpers";
 import InterviewSectionsTop from "./InterviewSectionsTop";
 import InterviewsTable from "./intervewsTable";
 import AddInterview from "./addInterview";
+import {
+  changeCurrenetInterviewSection,
+  changeCurrenetInterviewFunctionality,
+} from "../../../redux/app/app.actions";
+
+import {
+  CurrentInterviewSectionType,
+  CurrentInterviewFunctionalityType,
+} from "../../../../shared/types/app.types";
 
 class Interviews extends React.Component<IInterviewsProps, IInterviewsState> {
   constructor(props) {
@@ -27,11 +36,13 @@ class Interviews extends React.Component<IInterviewsProps, IInterviewsState> {
   }
 
   setShow = (e) => {
-    this.setState({ show: e.target.value });
+    const value: CurrentInterviewSectionType = e.target.value;
+    this.props.changeCurrenetInterviewSection(value);
   };
 
   setFunc = (val) => {
-    this.setState({ Func: val });
+    //this.setState({ Func: val });
+    this.props.changeCurrenetInterviewFunctionality(val);
   };
 
   componentWillUpdate() {
@@ -57,10 +68,12 @@ class Interviews extends React.Component<IInterviewsProps, IInterviewsState> {
 
         <div className="row">
           <div className="col-12">
-            {this.state.Func === "show interviews" && (
+            {this.props.currentFunctionality === "show interviews" && (
               <InterviewsTable interviewData={interviewData} />
             )}
-            {this.state.Func == "add interview" && <AddInterview />}
+            {this.props.currentFunctionality == "add interview" && (
+              <AddInterview />
+            )}
           </div>
         </div>
       </>
@@ -69,6 +82,12 @@ class Interviews extends React.Component<IInterviewsProps, IInterviewsState> {
 }
 export interface IInterviewsProps {
   interviews: any[];
+  currentSection: CurrentInterviewSectionType;
+  currentFunctionality: CurrentInterviewFunctionalityType;
+  changeCurrenetInterviewSection: (value: CurrentInterviewSectionType) => void;
+  changeCurrenetInterviewFunctionality: (
+    value: CurrentInterviewFunctionalityType
+  ) => void;
 }
 
 export interface IInterviewsState {
@@ -82,5 +101,10 @@ export interface IInterviewsState {
 
 const mapStateToProps = (state) => ({
   interviews: state.user.interviews,
+  currentSection: state.app.currentInterviewSection,
+  currentFunctionality: state.app.currentInterviewFunctionality,
 });
-export default connect(mapStateToProps, null)(Interviews);
+export default connect(mapStateToProps, {
+  changeCurrenetInterviewSection,
+  changeCurrenetInterviewFunctionality,
+})(Interviews);
