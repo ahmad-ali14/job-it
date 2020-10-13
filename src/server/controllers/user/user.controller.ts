@@ -104,9 +104,7 @@ class UserController implements IControllerBase {
 //               email: user.email,
 //             };
             
-            delete user.password;
-
-            console.log(user);
+            user.password = undefined;
             
             responseObject = {
               user: user,

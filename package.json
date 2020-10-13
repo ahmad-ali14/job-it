@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "watch:build": "npx webpack -w",
-    "clean": "rimraf ./dist/* && rimraf ./public/js/* && touch ./dist/server.js && touch ./public/js/app.js ",
+    "clean": "rimraf ./dist/* && rimraf ./public/js/* && mkdir -p ./dist && mkdir -p ./public/js && touch ./dist/server.js && touch ./public/js/app.js ",
     "watch:server": "nodemon dist/server.js",
     "dev": " npm run clean && npm-run-all --parallel watch:*",
     "build": "webpack",
