@@ -97,15 +97,19 @@ class UserController implements IControllerBase {
             // Authorised
             const token = generateToken(email);
 
-            userToSend = {
-              _id: user._id,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              email: user.email,
-            };
+//             userToSend = {
+//               _id: user._id,
+//               firstName: user.firstName,
+//               lastName: user.lastName,
+//               email: user.email,
+//             };
+            
+            delete user.password;
 
+            console.log(user);
+            
             responseObject = {
-              user: userToSend,
+              user: user,
               token: token,
               err: null,
               isAuthorised: true,
